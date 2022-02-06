@@ -287,6 +287,7 @@ else:
 
 
 NIGHT_RESTAURANT_BAN = np.datetime64('2022-01-14')
+VACCINE_BUBBLE = np.datetime64('2022-02-24')
 # END_LOCKDOWN = np.datetime64('2021-10-15')
 # FURTHER_EASING = np.datetime64('2021-10-22')
 # EASING_95  = np.datetime64('2021-11-12')
@@ -313,22 +314,22 @@ ax1 = plt.axes()
 #    label="Easing",
 #)
 #
-#ax1.fill_betweenx(
-#    [-10, 10],
-#    [FURTHER_EASING, FURTHER_EASING],
-#    [EASING_95, EASING_95],
-#    color=whiten("green", 0.5),
-#    linewidth=0,
-#    label="Further easing",
-#)
-#
 ax1.fill_betweenx(
    [-10, 10],
    [NIGHT_RESTAURANT_BAN, NIGHT_RESTAURANT_BAN],
-   [END_PLOT, END_PLOT],
+   [VACCINE_BUBBLE, VACCINE_BUBBLE],
    color=whiten("green", 0.25),
    linewidth=0,
    label="6pm Dining Curfew",
+)
+
+ax1.fill_betweenx(
+   [-10, 10],
+   [VACCINE_BUBBLE, VACCINE_BUBBLE],
+   [END_PLOT, END_PLOT],
+   color=whiten("green", 0.5),
+   linewidth=0,
+   label="Vaccine Bubble",
 )
 
 
@@ -456,10 +457,10 @@ labels += labels2
 
 if VAX:
     # order = [4, 6, 5, 7, 8, 10, 9, 0, 1, 2, 3]
-    order = [1, 3, 2, 4, 5, 7, 6, 0]
+    order = [2, 4, 3, 5, 6, 8, 7, 1, 0]
 else:
     # order = [4, 5, 6, 7, 9, 8, 0, 1, 2, 3]
-    order = [1, 2, 3, 4, 6, 5, 0]
+    order = [2, 3, 4, 5, 7, 6, 1, 0]
 
 ax2.legend(
     # handles,
