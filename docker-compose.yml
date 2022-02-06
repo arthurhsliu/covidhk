@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+   covidhk:
+      container_name: covidhk
+      environment:
+         - TZ=Asia/Hong_Kong
+      image: jupyter/datascience-notebook
+      ports:
+         - "8888:8888/tcp"
+      volumes:
+         - .:/home/jovyan/work
