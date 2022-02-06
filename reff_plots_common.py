@@ -24,10 +24,19 @@ def th(n):
 def hksar_chp_case_data(start_date=np.datetime64('2022-01-01')):
     """Daily new cases from HK Government Data Web"""
     url = f'http://www.chp.gov.hk/files/misc/latest_situation_of_reported_cases_covid_19_eng.csv'
-    df = pd.read_csv(url)
+    df1 = pd.read_csv(url)
 
-    df = df[df['Number of cases tested positive for SARS-CoV-2 virus'].notnull()]
+    df1 = df1[df1['Number of cases tested positive for SARS-CoV-2 virus'].notnull()]
+    
+    # Manually added cumulative case numbers
+    df2 = pd.read_csv('data/manual.csv')
+    df2 = df2[df2['Number of cases tested positive for SARS-CoV-2 virus'].notnull()]
+    
+    df2 = df2[df1.columns]
 
+    df = pd.concat([df1, df2])
+    df = df.drop_duplicates('As of date', keep='first')
+    
     dates = np.array(
         [
             np.datetime64(datetime.strptime(date.strip(), "%d/%m/%Y"), 'D') - 1
