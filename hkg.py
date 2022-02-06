@@ -111,6 +111,7 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
     #     OCT_RATE = 1.8
     
     # Vaccination rate 7 day average as of 2022-02-06
+    # source: https://www.covidvaccine.gov.hk/en/#:~:text=Latest%20Daily%20Figure%20of%20Doses%20Administered
     VAX_RATE = 22512 / POP_OF_HKG
     
     for i in range(1, len(doses_per_100)):
