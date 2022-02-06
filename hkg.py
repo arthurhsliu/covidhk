@@ -497,7 +497,7 @@ axpos = ax1.get_position()
 text = fig1.text(
     0.99,
     0.02,
-    "@arthurhsliu | based on work by @chrisjbillington",
+    "@arthurhsliu | based on work by @chrisbilbo",
     size=8,
     alpha=0.5,
     color=(0, 0, 0.25),
