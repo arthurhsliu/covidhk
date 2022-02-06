@@ -128,7 +128,7 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
 #     else:
 #         MAX_DOSES_PER_100 = 2 * 85.0
     
-    # Cap max doses per 100 at 80%, assuming first dose vaccination stops at 80% due to slowing
+    # Cap max doses per 100 at 80%, assuming first dose vaccination stops at 80% due to vaccine hesitancy
     MAX_DOSES_PER_100 = 2*80.0
     
     doses_per_100 = np.clip(doses_per_100, 0, MAX_DOSES_PER_100)
@@ -139,7 +139,7 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
     # for it to have taken full effect, it doesn't matter.
     daily = np.diff(all_doses_per_100, prepend=0)
 
-    # convolve daily doses with a transfer function for delayed effectiveness of vaccnes
+    # convolve daily doses with a transfer function for delayed effectiveness of vaccines
     pts = int(VAX_ONSET_MU + 3 * VAX_ONSET_SIGMA)
     x = np.arange(-pts, pts + 1, 1)
     kernel = np.exp(-((x - VAX_ONSET_MU) ** 2) / (2 * VAX_ONSET_SIGMA ** 2))
@@ -166,8 +166,6 @@ all_dates = dates
 all_new = new
 
 # Current vaccination level:
-# doses_per_100 = air_doses_per_100(n=len(dates))
-# doses_per_100 = [1]*(len(dates))
 doses_per_100 = hkg_doses_per_100(n=len(dates))
 
 
@@ -177,7 +175,7 @@ if OLD:
     doses_per_100 = doses_per_100[:START_VAX_PROJECTIONS + OLD_END_IX]
 
 START_PLOT = np.datetime64('2022-01-01')
-END_PLOT = np.datetime64('2022-05-01') if VAX else dates[-1] + 28
+END_PLOT = np.datetime64('2022-08-01') if VAX else dates[-1] + 28
 
 tau = 5  # reproductive time of the virus in days
 R_clip = 50
