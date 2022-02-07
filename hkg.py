@@ -156,10 +156,11 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
 #dates, new = covidlive_new_cases('HKG', start_date=np.datetime64('2021-05-10'))
 dates, new = hksar_chp_case_data(start_date=np.datetime64('2022-01-01'))
 
-if dates[-1] >= np.datetime64('2022-01-09'):
-    TEST_DETECTION_RATE = 0.27
-else:
+# Use test detection rate of 1 in 5 as suggested by Prof Ben Cowling
+if dates[-1] >= np.datetime64('2022-02-08'):
     TEST_DETECTION_RATE = 0.2
+else:
+    TEST_DETECTION_RATE = 0.27
 
 START_VAX_PROJECTIONS = 1
 all_dates = dates
@@ -175,7 +176,7 @@ if OLD:
     doses_per_100 = doses_per_100[:START_VAX_PROJECTIONS + OLD_END_IX]
 
 START_PLOT = np.datetime64('2022-01-01')
-END_PLOT = np.datetime64('2022-08-01') if VAX else dates[-1] + 28
+END_PLOT = np.datetime64('2022-06-01') if VAX else dates[-1] + 28
 
 tau = 5  # reproductive time of the virus in days
 R_clip = 50
