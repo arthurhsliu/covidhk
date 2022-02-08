@@ -286,6 +286,7 @@ else:
 
 
 NIGHT_RESTAURANT_BAN = np.datetime64('2022-01-14')
+CAP599F_ADDITIONAL_PREMISES = np.datetime64('2022-02-10')
 VACCINE_BUBBLE = np.datetime64('2022-02-24')
 # END_LOCKDOWN = np.datetime64('2021-10-15')
 # FURTHER_EASING = np.datetime64('2021-10-22')
@@ -304,22 +305,23 @@ ax1 = plt.axes()
 #    label="Lockdown",
 #)
 #
-#ax1.fill_betweenx(
-#    [-10, 10],
-#    [END_LOCKDOWN, END_LOCKDOWN],
-#    [FURTHER_EASING, FURTHER_EASING],
-#    color=whiten("yellow", 0.5),
-#    linewidth=0,
-#    label="Easing",
-#)
-#
+
 ax1.fill_betweenx(
    [-10, 10],
    [NIGHT_RESTAURANT_BAN, NIGHT_RESTAURANT_BAN],
-   [VACCINE_BUBBLE, VACCINE_BUBBLE],
-   color=whiten("green", 0.25),
+   [CAP599F_ADDITIONAL_PREMISES, CAP599F_ADDITIONAL_PREMISES],
+   color=whiten("yellow", 0.25),
    linewidth=0,
    label="6pm Dining Curfew",
+)
+
+ax1.fill_betweenx(
+   [-10, 10],
+   [CAP599F_ADDITIONAL_PREMISES, CAP599F_ADDITIONAL_PREMISES],
+   [VACCINE_BUBBLE, VACCINE_BUBBLE],
+   color=whiten("yellow", 0.5),
+   linewidth=0,
+   label="2022-02-10 599F/599G",
 )
 
 ax1.fill_betweenx(
@@ -328,7 +330,7 @@ ax1.fill_betweenx(
    [END_PLOT, END_PLOT],
    color=whiten("green", 0.5),
    linewidth=0,
-   label="Vaccine Bubble",
+   label="Vaccine Pass",
 )
 
 
@@ -456,11 +458,11 @@ labels += labels2
 
 if VAX:
     # order = [4, 6, 5, 7, 8, 10, 9, 0, 1, 2, 3]
-    order = [2, 4, 3, 5, 6, 8, 7, 1, 0]
+    order = [4, 5, 4, 6, 7, 9, 8, 2, 1, 0]
 else:
     # order = [4, 5, 6, 7, 9, 8, 0, 1, 2, 3]
-    order = [2, 3, 4, 5, 7, 6, 1, 0]
-
+    order = [3, 4, 5, 6, 8, 7, 2, 1, 0]
+    
 ax2.legend(
     # handles,
     # labels,
