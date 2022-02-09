@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import matplotlib.units as munits
 import matplotlib.dates as mdates
 import matplotlib.ticker as mticker
+from matplotlib import font_manager
 
 from reff_plots_common import (
     hksar_chp_case_data,
@@ -176,7 +177,7 @@ if OLD:
     doses_per_100 = doses_per_100[:START_VAX_PROJECTIONS + OLD_END_IX]
 
 START_PLOT = np.datetime64('2022-01-01')
-END_PLOT = np.datetime64('2022-06-01') if VAX else dates[-1] + 28
+END_PLOT = np.datetime64('2022-05-01') if VAX else dates[-1] + 28
 
 tau = 5  # reproductive time of the virus in days
 R_clip = 50
@@ -312,7 +313,7 @@ ax1.fill_betweenx(
    [CAP599F_ADDITIONAL_PREMISES, CAP599F_ADDITIONAL_PREMISES],
    color=whiten("yellow", 0.25),
    linewidth=0,
-   label="6pm Dining Curfew",
+   label="6pm Dining Curfew 晚市禁堂食",
 )
 
 ax1.fill_betweenx(
@@ -321,7 +322,7 @@ ax1.fill_betweenx(
    [VACCINE_BUBBLE, VACCINE_BUBBLE],
    color=whiten("yellow", 0.5),
    linewidth=0,
-   label="2022-02-10 599F/599G",
+   label="2022-02-10 599F/599G 限聚令收緊",
 )
 
 ax1.fill_betweenx(
@@ -330,14 +331,14 @@ ax1.fill_betweenx(
    [END_PLOT, END_PLOT],
    color=whiten("green", 0.5),
    linewidth=0,
-   label="Vaccine Pass",
+   label="Vaccine Pass 疫苗通行證",
 )
 
 
 ax1.fill_between(
     dates[1:] + 1,
     R,
-    label=R"$R_\mathrm{eff}$",
+    label=R"$R_\mathrm{eff}$ 有效傳染數",
     step='pre',
     color='C0',
 )
@@ -347,7 +348,7 @@ if VAX:
         np.concatenate([dates[1:].astype(int), dates[-1].astype(int) + t_projection]) + 1,
         np.concatenate([R_lower, R_eff_projection_lower]),
         np.concatenate([R_upper, R_eff_projection_upper]),
-        label=R"$R_\mathrm{eff}$/projection uncertainty",
+        label=R"$R_\mathrm{eff}$/projection uncertainty 不確定性",
         color='cyan',
         edgecolor='blue',
         alpha=0.2,
@@ -358,7 +359,7 @@ if VAX:
     ax1.fill_between(
         dates[-1].astype(int) + t_projection + 1,
         R_eff_projection,
-        label=R"$R_\mathrm{eff}$ (projection)",
+        label=R"$R_\mathrm{eff}$ (projection預測) ",
         step='pre',
         color='C0',
         linewidth=0,
@@ -369,7 +370,7 @@ else:
         dates[1:] + 1,
         R_lower,
         R_upper,
-        label=R"$R_\mathrm{eff}$ uncertainty",
+        label=R"$R_\mathrm{eff}$ uncertainty 不確定性",
         color='cyan',
         edgecolor='blue',
         alpha=0.2,
@@ -383,7 +384,7 @@ ax1.axhline(1.0, color='k', linewidth=1)
 ax1.axis(xmin=START_PLOT, xmax=END_PLOT, ymin=0, ymax=5)
 ax1.grid(True, linestyle=":", color='k', alpha=0.5)
 
-ax1.set_ylabel(R"$R_\mathrm{eff}$")
+ax1.set_ylabel(R"$R_\mathrm{eff}$ 有效傳染數")
 
 u_R_latest = (R_upper[-1] - R_lower[-1]) / 2
 
@@ -391,17 +392,18 @@ R_eff_string = fR"$R_\mathrm{{eff}}={R[-1]:.02f} \pm {u_R_latest:.02f}$"
 
 latest_update_day = datetime.fromisoformat(str(dates[-1] + 1))
 latest_update_day = f'{latest_update_day.strftime("%B")} {th(latest_update_day.day)}'
+latest_update_day_iso = datetime.fromisoformat(str(dates[-1] + 1)).strftime("%Y-%m-%d")
 
 if VAX:
     title_lines = [
-        f"SIR model of the HKSAR as of {latest_update_day}",
-        f"Starting from currently estimated {R_eff_string}",
+        f"香港冠狀病毒病數學模型推算 SIR model of the HKSAR as of {latest_update_day_iso}",
+        f"Starting from currently estimated {R_eff_string} 開始",
     ]
 else:
     region = "the HKSAR"
     title_lines = [
-        f"$R_\\mathrm{{eff}}$ in {region} as of {latest_update_day}, with restriction levels and daily cases",
-        f"Latest estimate: {R_eff_string}",
+        f"香港冠狀病毒病的有效傳染數 $R_\\mathrm{{eff}}$ in {region} as of {latest_update_day_iso}",
+        f"最新估計 Latest estimate: {R_eff_string}",
     ]
     
 ax1.set_title('\n'.join(title_lines))
@@ -410,12 +412,12 @@ ax1.yaxis.set_major_locator(mticker.MultipleLocator(0.25))
 ax2 = ax1.twinx()
 if OLD:
     ax2.step(all_dates + 1, all_new + 0.02, color='purple', alpha=0.5)
-ax2.step(dates + 1, new + 0.02, color='purple', label='Daily cases')
+ax2.step(dates + 1, new + 0.02, color='purple', label='Daily cases\n每日個案')
 ax2.plot(
     dates.astype(int) + 0.5,
     new_smoothed,
     color='magenta',
-    label='Daily cases (smoothed)',
+    label='Daily cases(smoothed)\n每日個案(平滑）',
 )
 
 ax2.fill_between(
@@ -426,14 +428,14 @@ ax2.fill_between(
     alpha=0.3,
     linewidth=0,
     zorder=10,
-    label=f'Smoothing/{"projection" if VAX else "trend"} uncertainty',
+    label=f'Smoothing {"projection" if VAX else "trend"} uncertainty\n平滑{"推算" if VAX else "趨勢"}不確定性',
 )
 ax2.plot(
     dates[-1].astype(int) + 0.5 + t_projection,
     new_projection.clip(0, 1e6),  # seen SVG rendering issues when this is big
     color='magenta',
     linestyle='--',
-    label=f'Daily cases ({"SIR projection" if VAX else "exponential trend"})',
+    label=f'Daily cases ({"SIR projection" if VAX else "exponential trend"})\n每日個案({"SIR 推算" if VAX else "趨勢"})',
 )
 ax2.fill_between(
     dates[-1].astype(int) + 0.5 + t_projection,
@@ -444,7 +446,7 @@ ax2.fill_between(
     linewidth=0,
 )
 
-ax2.set_ylabel("Daily cases (log scale)")
+ax2.set_ylabel("Daily cases(log scale)\n每日個案(對數刻度)")
 
 ax2.set_yscale('log')
 ax2.axis(ymin=1, ymax=100_000)
@@ -458,11 +460,17 @@ labels += labels2
 
 if VAX:
     # order = [4, 6, 5, 7, 8, 10, 9, 0, 1, 2, 3]
-    order = [4, 5, 4, 6, 7, 9, 8, 2, 1, 0]
+    order = [3, 5, 4, 6, 7, 9, 8, 0, 1, 2]
 else:
     # order = [4, 5, 6, 7, 9, 8, 0, 1, 2, 3]
-    order = [3, 4, 5, 6, 8, 7, 2, 1, 0]
+    order = [3, 4, 5, 6, 8, 7, 0, 1, 2]
     
+fontP = font_manager.FontProperties()
+fontP.set_family('SimHei')
+fontP.set_size(8)
+
+plt.rcParams['font.sans-serif']=['SimHei']
+
 ax2.legend(
     # handles,
     # labels,
@@ -470,7 +478,7 @@ ax2.legend(
     [labels[idx] for idx in order],
     loc='upper left',
     ncol=1,
-    prop={'size': 8},
+    prop=fontP,
 )
 
 
@@ -510,12 +518,13 @@ text.set_bbox(dict(facecolor='white', alpha=0.8, linewidth=0))
 if VAX:
     total_cases_range = f"{total_cases_lower/1000:.1f}k—{total_cases_upper/1000:.1f}k"
     text = fig1.text(
-        0.62,
-        0.83,
+        0.70,
+        0.80,
         "\n".join(
             [
-                f"Projected total cases in outbreak:  {total_cases/1000:.1f}k",
-                f"                                  68% range:  {total_cases_range}",
+                f"Projected total cases in outbreak",
+                f"預計爆發的總病例數:  {total_cases/1000:.1f}k",
+                f"68% range範圍:  {total_cases_range}",
             ]
         ),
         fontsize='small',
@@ -536,13 +545,13 @@ if True: # Just to keep the diff with hkg.py sensible here
     if OLD and dates[-1] < np.datetime64('2021-12-15'):
         ymax = 100
     elif VAX:
-        ymax = 5_000
+        ymax = 10_000
     else:
-        ymax = 5_000
+        ymax = 10_000
     ax2.axis(ymin=0, ymax=ymax)
     ax2.yaxis.set_major_locator(mticker.MultipleLocator(ymax / 10))
     ax2.yaxis.set_major_formatter(mticker.EngFormatter())
-    ax2.set_ylabel("Daily confirmed cases (linear scale)")
+    ax2.set_ylabel("Daily confirmed cases(linear scale)\n每日個案(線性刻度)")
     if OLD:
         fig1.savefig(f'hkg_animated_linear/{OLD_END_IX:04d}.png', dpi=133)
     else:
