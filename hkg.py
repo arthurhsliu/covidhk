@@ -111,9 +111,9 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
     #     SEP_RATE = 1.6
     #     OCT_RATE = 1.8
     
-    # Vaccination rate 7 day average as of 2022-02-06
+    # Vaccination rate 7 day average as of 2022-02-09
     # source: https://www.covidvaccine.gov.hk/en/#:~:text=Latest%20Daily%20Figure%20of%20Doses%20Administered
-    VAX_RATE = 22512 / POP_OF_HKG
+    VAX_RATE = 46226 / POP_OF_HKG
     
     for i in range(1, len(doses_per_100)):
         # if i < SEP:
@@ -129,8 +129,8 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
 #     else:
 #         MAX_DOSES_PER_100 = 2 * 85.0
     
-    # Cap max doses per 100 at 80%, assuming first dose vaccination stops at 80% due to vaccine hesitancy
-    MAX_DOSES_PER_100 = 2*80.0
+    # Cap max doses per 100 at 85%
+    MAX_DOSES_PER_100 = 2*85.0
     
     doses_per_100 = np.clip(doses_per_100, 0, MAX_DOSES_PER_100)
 
