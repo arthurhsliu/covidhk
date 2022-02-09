@@ -7,7 +7,9 @@ services:
       environment:
          TZ: "Asia/Hong_Kong"
          GRANT_SUDO: "yes"
-      image: jupyter/datascience-notebook
+      build: 
+        context: .
+        dockerfile: Dockerfile
       ports:
          - "8888:8888/tcp"
       volumes:
