@@ -322,7 +322,7 @@ ax1.fill_betweenx(
    [VACCINE_BUBBLE, VACCINE_BUBBLE],
    color=whiten("yellow", 0.5),
    linewidth=0,
-   label="2022-02-10 599F/599G 限聚令收緊",
+   label="2022-02-10 Restrictions\n限聚令收緊",
 )
 
 ax1.fill_betweenx(
@@ -348,7 +348,7 @@ if VAX:
         np.concatenate([dates[1:].astype(int), dates[-1].astype(int) + t_projection]) + 1,
         np.concatenate([R_lower, R_eff_projection_lower]),
         np.concatenate([R_upper, R_eff_projection_upper]),
-        label=R"$R_\mathrm{eff}$/projection uncertainty 不確定性",
+        label=f"$R_\\mathrm{{eff}}$/projection uncertainty\n推算不確定性",
         color='cyan',
         edgecolor='blue',
         alpha=0.2,
@@ -359,7 +359,7 @@ if VAX:
     ax1.fill_between(
         dates[-1].astype(int) + t_projection + 1,
         R_eff_projection,
-        label=R"$R_\mathrm{eff}$ (projection預測) ",
+        label=f"$R_\\mathrm{{eff}}$ (projection預測) ",
         step='pre',
         color='C0',
         linewidth=0,
@@ -523,7 +523,7 @@ if VAX:
         "\n".join(
             [
                 f"Projected total cases in outbreak",
-                f"預計爆發的總病例數:  {total_cases/1000:.1f}k",
+                f"推算爆發的總數:  {total_cases/1000:.1f}k",
                 f"68% range範圍:  {total_cases_range}",
             ]
         ),
