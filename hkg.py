@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 from datetime import datetime
 from pytz import timezone
@@ -26,33 +28,19 @@ from reff_plots_common import (
     th,
 )
 
-# Our uncertainty calculations are stochastic. Make them reproducible, at least:
-np.random.seed(0)
-
-converter = mdates.ConciseDateConverter()
-
-munits.registry[np.datetime64] = converter
-munits.registry[datetime.date] = converter
-munits.registry[datetime] = converter
-
-
+# Global Variables
+# Population of Hong Kong
 # https://www.censtatd.gov.hk/en/scode150.html
 POP_OF_HKG = 7394700
 
-VAX = 'vax' in sys.argv
-OLD = 'old' in sys.argv
+# Vaccination rate 7 day average as of 2022-02-09
+# source: https://www.covidvaccine.gov.hk/en/#:~:text=Latest%20Daily%20Figure%20of%20Doses%20Administered
+def hkg_7day_vaccination_rate():
+    return 46226 / POP_OF_HKG
 
-
-if not VAX and sys.argv[1:]:
-    if len(sys.argv) == 2:
-        LGA_IX = int(sys.argv[1])
-    elif OLD and len(sys.argv) == 3:
-        OLD_END_IX = int(sys.argv[2])
-    else:
-        raise ValueError(sys.argv[1:])
-
-if OLD:
-    VAX = True
+# Global settings
+# Our uncertainty calculations are stochastic. Make them reproducible, at least:
+np.random.seed(0)
 
 def hkg_doses_per_100(n):
     """return HKG cumulative doses per 100 population for the last n days"""
@@ -73,7 +61,6 @@ def hkg_doses_per_100(n):
     doses = np.array(list(total_doses.values())).cumsum()
 
     return 100 * doses[-n:] / POP_OF_HKG
-
 
 def projected_vaccine_immune_population(t, historical_doses_per_100):
     """compute projected future susceptible population, given an array
@@ -111,9 +98,7 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
     #     SEP_RATE = 1.6
     #     OCT_RATE = 1.8
     
-    # Vaccination rate 7 day average as of 2022-02-09
-    # source: https://www.covidvaccine.gov.hk/en/#:~:text=Latest%20Daily%20Figure%20of%20Doses%20Administered
-    VAX_RATE = 46226 / POP_OF_HKG
+    VAX_RATE = hkg_7day_vaccination_rate()
     
     for i in range(1, len(doses_per_100)):
         # if i < SEP:
@@ -153,6 +138,25 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
 
     return immune
 
+converter = mdates.ConciseDateConverter()
+
+munits.registry[np.datetime64] = converter
+munits.registry[datetime.date] = converter
+munits.registry[datetime] = converter
+
+VAX = 'vax' in sys.argv
+OLD = 'old' in sys.argv
+
+if not VAX and sys.argv[1:]:
+    if len(sys.argv) == 2:
+        LGA_IX = int(sys.argv[1])
+    elif OLD and len(sys.argv) == 3:
+        OLD_END_IX = int(sys.argv[2])
+    else:
+        raise ValueError(sys.argv[1:])
+
+if OLD:
+    VAX = True
 
 #dates, new = covidlive_new_cases('HKG', start_date=np.datetime64('2021-05-10'))
 dates, new = hksar_chp_case_data(start_date=np.datetime64('2022-01-01'))
