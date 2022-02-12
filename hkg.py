@@ -6,6 +6,7 @@ from pytz import timezone
 from pathlib import Path
 import json
 
+import urllib
 import requests
 import pandas as pd
 from scipy.signal import convolve
@@ -33,10 +34,12 @@ from reff_plots_common import (
 # https://www.censtatd.gov.hk/en/scode150.html
 POP_OF_HKG = 7394700
 
-# Vaccination rate 7 day average as of 2022-02-09
-# source: https://www.covidvaccine.gov.hk/en/#:~:text=Latest%20Daily%20Figure%20of%20Doses%20Administered
+# Vaccination rate 7 day average
+# source: https://static.data.gov.hk/covid-vaccine/summary.json
 def hkg_7day_vaccination_rate():
-    return 46226 / POP_OF_HKG
+    with urllib.request.urlopen("https://static.data.gov.hk/covid-vaccine/summary.json") as url:
+        data = json.loads(url.read().decode())
+    return data['sevenDayAvg'] / POP_OF_HKG
 
 # Global settings
 # Our uncertainty calculations are stochastic. Make them reproducible, at least:
