@@ -280,7 +280,7 @@ def stochastic_sir(
         recovered = cumulative - infectious
         for j, vax_immune in enumerate(vaccine_immunity):
             # vax_immune is as fraction of the population, recovered and infectious are
-            # in absolute nubmers so need to be normalised by population to get
+            # in absolute numbers so need to be normalised by population to get
             # susceptible fraction
             s = (1 - vax_immune) * (1 - (recovered + infectious) / population_size)
             s = max(0, s)
