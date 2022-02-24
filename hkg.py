@@ -336,9 +336,9 @@ ax1.fill_betweenx(
    [-10, 10],
    [VACCINE_BUBBLE, VACCINE_BUBBLE],
    [END_PLOT, END_PLOT],
-   color=whiten("green", 0.5),
+   color=whiten("green", 0.25),
    linewidth=0,
-   label="Vaccine Pass 疫苗通行證",
+   label="Vaccine Pass+Restrictions\n疫苗通行證+限聚令收緊",
 )
 
 
