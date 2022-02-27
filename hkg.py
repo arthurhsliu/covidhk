@@ -542,6 +542,13 @@ if VAX:
 else:
     suffix = ''
 
+# Save some deets to a file for the auto reddit posting to use:
+try:
+    # Add to existing file if already present
+    stats = json.loads(Path("latest_hkg_stats.json").read_text())
+except FileNotFoundError:
+    stats = {}
+
 if OLD:
     fig1.savefig(f'hkg_animated/{OLD_END_IX:04d}.png', dpi=133)
 else:
@@ -551,10 +558,12 @@ if True: # Just to keep the diff with hkg.py sensible here
     ax2.set_yscale('linear')
     if OLD and dates[-1] < np.datetime64('2021-12-15'):
         ymax = 100
+    elif dates[-1] < np.datetime64('2022-02-24'):
+        ymax = 10_000
     elif VAX:
-        ymax = 10_000
+        ymax = 10_000*(int(stats['projection'][6]['cases']/10_000)+1)
     else:
-        ymax = 10_000
+        ymax = 10_000*(int(stats['projection'][6]['cases']/10_000)+1)
     ax2.axis(ymin=0, ymax=ymax)
     ax2.yaxis.set_major_locator(mticker.MultipleLocator(ymax / 10))
     ax2.yaxis.set_major_formatter(mticker.EngFormatter())
@@ -564,13 +573,6 @@ if True: # Just to keep the diff with hkg.py sensible here
     else:
         fig1.savefig(f'COVID_HKG{suffix}_linear.svg')
         fig1.savefig(f'COVID_HKG{suffix}_linear.png', dpi=133)
-
-# Save some deets to a file for the auto reddit posting to use:
-try:
-    # Add to existing file if already present
-    stats = json.loads(Path("latest_hkg_stats.json").read_text())
-except FileNotFoundError:
-    stats = {}
 
 if True: # keep the diff simple
     stats['R_eff'] = R[-1] 
