@@ -162,7 +162,7 @@ if OLD:
     VAX = True
 
 #dates, new = covidlive_new_cases('HKG', start_date=np.datetime64('2021-05-10'))
-dates, new = hksar_chp_case_data(start_date=np.datetime64('2022-01-01'))
+dates, new = hksar_chp_case_data(start_date=np.datetime64('2021-12-15'))
 
 # Use test detection rate of 1 in 5 as suggested by Prof Ben Cowling
 if dates[-1] >= np.datetime64('2022-02-08'):
@@ -183,7 +183,7 @@ if OLD:
     new = new[:START_VAX_PROJECTIONS + OLD_END_IX]
     doses_per_100 = doses_per_100[:START_VAX_PROJECTIONS + OLD_END_IX]
 
-START_PLOT = np.datetime64('2022-01-01')
+START_PLOT = np.datetime64('2021-12-15')
 END_PLOT = np.datetime64('2022-05-01') if VAX else dates[-1] + 28
 
 tau = 5  # reproductive time of the virus in days
