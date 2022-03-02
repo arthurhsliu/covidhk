@@ -26,6 +26,8 @@ def hksar_chp_case_data(start_date=np.datetime64('2022-01-01')):
     url = f'http://www.chp.gov.hk/files/misc/latest_situation_of_reported_cases_covid_19_eng.csv'
     df1 = pd.read_csv(url)
 
+    df1['Number of cases tested positive for SARS-CoV-2 virus'].fillna(df1['Number of confirmed cases'],inplace = True)
+
     df1 = df1[df1['Number of cases tested positive for SARS-CoV-2 virus'].notnull()]
     
     # Manually added cumulative case numbers
