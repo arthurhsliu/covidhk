@@ -166,7 +166,7 @@ dates, new = hksar_chp_case_data(start_date=np.datetime64('2021-12-15'))
 
 # Use test detection rate of 1 in 5 as suggested by Prof Ben Cowling
 if dates[-1] >= np.datetime64('2022-02-08'):
-    TEST_DETECTION_RATE = 0.2
+    TEST_DETECTION_RATE = 0.20
 else:
     TEST_DETECTION_RATE = 0.27
 
@@ -524,19 +524,23 @@ text.set_bbox(dict(facecolor='white', alpha=0.8, linewidth=0))
 
 if VAX:
     total_cases_range = f"{total_cases_lower/1000:.1f}k—{total_cases_upper/1000:.1f}k"
+    total_infections_range = f"{total_cases_lower/TEST_DETECTION_RATE/1000:.1f}k—{total_cases_upper/TEST_DETECTION_RATE/1000:.1f}k"
     text = fig1.text(
-        0.70,
-        0.80,
+        0.69,
+        0.77,
         "\n".join(
             [
                 f"Projected total cases in outbreak",
-                f"推算爆發的總數:  {total_cases/1000:.1f}k",
+                f"推算爆發確診的總數:  {total_cases/1000:.1f}k",
                 f"68% range範圍:  {total_cases_range}",
+                f"Projected total infections in outbreak",
+                f"推算爆發感染的總數:  {total_cases/TEST_DETECTION_RATE/1000:.1f}k",
+                f"68% range範圍:  {total_infections_range}",
             ]
         ),
         fontsize='small',
     )
-    text.set_bbox(dict(facecolor='white', alpha=0.8, linewidth=0))
+    text.set_bbox(dict(facecolor='white', alpha=0.6, linewidth=0))
 
     suffix = '_vax'
 else:
