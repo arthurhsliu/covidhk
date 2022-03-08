@@ -576,9 +576,9 @@ if True: # Just to keep the diff with hkg.py sensible here
     elif dates[-1] < np.datetime64('2022-02-24'):
         ymax = 10_000
     elif VAX:
-        ymax = 10_000*(int(stats['projection'][6]['cases']/10_000)+1)
+        ymax = 10_000*(int(max([x['cases'] for x in stats['projection'][:6]])/10_000)+1)
     else:
-        ymax = 10_000*(int(stats['projection'][6]['cases']/10_000)+1)
+        ymax = 10_000*(int(max([x['cases'] for x in stats['projection'][:6]])/10_000)+1)
     ax2.axis(ymin=0, ymax=ymax)
     ax2.yaxis.set_major_locator(mticker.MultipleLocator(ymax / 10))
     ax2.yaxis.set_major_formatter(mticker.EngFormatter())
