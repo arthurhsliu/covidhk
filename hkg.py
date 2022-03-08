@@ -117,8 +117,8 @@ def projected_vaccine_immune_population(t, historical_doses_per_100):
 #     else:
 #         MAX_DOSES_PER_100 = 2 * 85.0
     
-    # Cap max doses per 100 at 85%
-    MAX_DOSES_PER_100 = 2*85.0
+    # Cap max doses per 100 at 90%
+    MAX_DOSES_PER_100 = 2*90.0
     
     doses_per_100 = np.clip(doses_per_100, 0, MAX_DOSES_PER_100)
 
