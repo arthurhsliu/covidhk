@@ -26,13 +26,18 @@ def hksar_chp_case_data(start_date=np.datetime64('2022-01-01')):
     url = f'http://www.chp.gov.hk/files/misc/latest_situation_of_reported_cases_covid_19_eng.csv'
     df1 = pd.read_csv(url)
 
-    df1['Number of cases tested positive for SARS-CoV-2 virus'].fillna(df1['Number of confirmed cases'],inplace = True)
+    df1['Number of cases tested positive for SARS-CoV-2 virus by nucleic acid tests'].fillna(df1['Number of confirmed cases'],inplace = True)
+    df1['Number of cases tested positive for SARS-CoV-2 virus by rapid antigen tests'].fillna(0,inplace = True)
 
-    df1 = df1[df1['Number of cases tested positive for SARS-CoV-2 virus'].notnull()]
+    df1 = df1[df1['Number of cases tested positive for SARS-CoV-2 virus by nucleic acid tests'].notnull()]
+    df1 = df1[df1['Number of cases tested positive for SARS-CoV-2 virus by rapid antigen tests'].notnull()]
+    
     
     # Manually added cumulative case numbers
     df2 = pd.read_csv('data/manual.csv')
-    df2 = df2[df2['Number of cases tested positive for SARS-CoV-2 virus'].notnull()]
+    df2 = df2[df2['Number of cases tested positive for SARS-CoV-2 virus by nucleic acid tests'].notnull()]
+    df2 = df2[df2['Number of cases tested positive for SARS-CoV-2 virus by rapid antigen tests'].notnull()]
+
     
     df2 = df2[df1.columns]
 
@@ -46,7 +51,8 @@ def hksar_chp_case_data(start_date=np.datetime64('2022-01-01')):
         ]
     )
 
-    cases = -np.diff(np.array(df['Number of cases tested positive for SARS-CoV-2 virus'].astype(int))[::-1])
+    cases = -np.diff(np.array(df['Number of cases tested positive for SARS-CoV-2 virus by nucleic acid tests'].astype(int))[::-1] +
+                              df['Number of cases tested positive for SARS-CoV-2 virus by rapid antigen tests'].astype(int)[::-1])
     cases = cases[::-1]
     dates = dates[1:]
 
