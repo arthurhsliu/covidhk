@@ -37,7 +37,7 @@ def hksar_chp_case_data(start_date=np.datetime64('2022-01-01')):
     df2 = df2[df1.columns]
 
     df = pd.concat([df1, df2])
-    df = df.drop_duplicates('As of date', keep='first')
+    df = df.drop_duplicates('As of date', keep='last')
     
     dates = np.array(
         [
