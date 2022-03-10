@@ -61,97 +61,6 @@ def hksar_chp_case_data(start_date=np.datetime64('2022-01-01')):
 
     return dates, cases
 
-def covidlive_case_data(state, start_date=np.datetime64('2021-06-10')):
-    """Daily net local cases from covidlive"""
-    url = f'https://covidlive.com.au/report/daily-source-overseas/{state.lower()}'
-    df = pd.read_html(url)[1]
-
-    df = df[df['LOCAL'] != '-']
-
-    dates = np.array(
-        [
-            np.datetime64(datetime.strptime(date, "%d %b %y"), 'D') - 1
-            for date in df['DATE']
-        ]
-    )
-
-    cases = np.array(df['LOCAL'].astype(int))[::-1]
-    dates = dates[::-1]
-
-    cases = np.diff(cases, prepend=0)[dates >= start_date]
-    dates = dates[dates >= start_date]    
-
-    return dates, cases
-
-
-def covidlive_new_cases(state, start_date=np.datetime64('2021-06-10')):
-    """Daily new cases from covidlive"""
-    url = f'https://covidlive.com.au/report/daily-cases/{state.lower()}'
-    df = pd.read_html(url)[1][:-1]
-
-    df = df[df['NEW'] != '-']
-
-    dates = np.array(
-        [
-            np.datetime64(datetime.strptime(date, "%d %b %y"), 'D') - 1
-            for date in df['DATE']
-        ]
-    )
-
-    cases = np.array(df['NEW'].astype(int))[::-1]
-    dates = dates[::-1]
-
-    cases = cases[dates >= start_date]
-    dates = dates[dates >= start_date]    
-
-    return dates, cases
-
-
-def covidlive_doses_per_100(n, state, population):
-    """return cumulative 1st + 2nd doses per 100 population for the last n days"""
-    df = pd.read_html(
-        f"https://covidlive.com.au/report/daily-vaccinations-first-doses/{state.lower()}"
-    )[1]
-    first = np.array(df['FIRST'][::-1])
-    first_dates = np.array(
-        [np.datetime64(datetime.strptime(d, '%d %b %y'), 'D') for d in df['DATE'][::-1]]
-    )
-
-    df = pd.read_html(
-        f"https://covidlive.com.au/report/daily-vaccinations-people/{state.lower()}"
-    )[1]
-    second = np.array(df['SECOND'][::-1])
-    second_dates = np.array(
-        [np.datetime64(datetime.strptime(d, '%d %b %y'), 'D') for d in df['DATE'][::-1]]
-    )
-
-    first[np.isnan(first)] = 0
-    second[np.isnan(second)] = 0
-    maxlen = max(len(first), len(second))
-    if len(first) < len(second):
-        first = np.concatenate([np.zeros(maxlen - len(first)), first])
-        dates = second_dates
-    elif len(second) < len(first):
-        second = np.concatenate([np.zeros(maxlen - len(second)), second])
-        dates = second_dates
-    else:
-        dates = first_dates
-
-    IX_CORRECTION = np.where(dates==np.datetime64('2021-07-29'))[0][0]
-
-    if state.lower() in ['nt', 'act']:
-        first[:IX_CORRECTION] += first[IX_CORRECTION] - first[IX_CORRECTION - 1]
-        second[:IX_CORRECTION] += second[IX_CORRECTION] - second[IX_CORRECTION - 1]
-
-    if first[-1] == first[-2]:
-        first = first[:-1]
-        dates = dates[:-1]
-        second = second[:-1]
-
-    daily_doses = np.diff(first + second, prepend=0)
-
-    return 100 * daily_doses.cumsum()[-n:] / population
-
 
 def gaussian_smoothing(data, pts):
     """Gaussian smooth an array by given number of points"""
@@ -202,7 +111,6 @@ def model_uncertainty(function, x, params, covariance):
         for j in range(len(params))
     )
     return np.sqrt(squared_model_uncertainty)
-
 
 def get_confidence_interval(data, confidence_interval=0.68, axis=0):
     """Return median (lower, upper) for a confidence interval of the data along the
