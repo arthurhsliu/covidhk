@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.colors as mcolors
 
-#Common functions used by the R_eff and SIR plots for Australian states and NZ
+#Common functions used by the R_eff and SIR plots
 
 
 def whiten(color, f):
@@ -26,8 +26,8 @@ def hksar_chp_case_data(start_date=np.datetime64('2022-01-01')):
     url = f'http://www.chp.gov.hk/files/misc/latest_situation_of_reported_cases_covid_19_eng.csv'
     df1 = pd.read_csv(url)
 
-    df1['Number of cases tested positive for SARS-CoV-2 virus by nucleic acid tests'].fillna(df1['Number of confirmed cases'],inplace = True)
-    df1['Number of cases tested positive for SARS-CoV-2 virus by rapid antigen tests'].fillna(0,inplace = True)
+    df1['Number of cases tested positive for SARS-CoV-2 virus by nucleic acid tests'].fillna(df1['Number of confirmed cases'], inplace = True)
+    df1['Number of cases tested positive for SARS-CoV-2 virus by rapid antigen tests'].fillna(0, inplace = True)
 
     df1 = df1[df1['Number of cases tested positive for SARS-CoV-2 virus by nucleic acid tests'].notnull()]
     df1 = df1[df1['Number of cases tested positive for SARS-CoV-2 virus by rapid antigen tests'].notnull()]
