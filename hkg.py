@@ -484,10 +484,10 @@ else:
     order = [4, 5, 6, 8, 7, 8, 0, 1, 2, 3]
     
 fontP = font_manager.FontProperties()
-fontP.set_family('SimHei')
+fontP.set_family('sans-serif')
 fontP.set_size(8)
 
-plt.rcParams['font.sans-serif']=['SimHei']
+plt.rcParams['font.sans-serif']=['WenQuanYi Zen Hei']
 
 ax2.legend(
     # handles,

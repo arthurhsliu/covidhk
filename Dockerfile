@@ -13,17 +13,10 @@ USER root
 
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
-    fonts-arphic-ukai && \
+    fonts-wqy-zenhei && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-#    fonts-arphic-uming \
-#    fonts-cns11643-sung \
-#    fonts-wqy-zenhei && \
 
-RUN ( cd /usr/share/fonts ; \
-      wget 'https://raw.githubusercontent.com/StellarCN/scp_zh/master/fonts/SimHei.ttf' ; \
-      rm -f /home/jovyan/.cache/matplotlib/fontlist-v330.json )
-
-#RUN sed -ie 's/^#font.sans-serif: DejaVu Sans/font.sans-serif: Microsoft YaHei, DejaVu Sans/g' /opt/conda/lib/python3.9/site-packages/matplotlib/mpl-data/matplotlibrc
+RUN ( rm -f /home/jovyan/.cache/matplotlib/fontlist-v330.json )
 
 USER ${NB_UID}
 
