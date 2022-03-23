@@ -297,6 +297,9 @@ NIGHT_RESTAURANT_BAN = np.datetime64('2022-01-14')
 CAP599F_ADDITIONAL_PREMISES = np.datetime64('2022-02-10')
 VACCINE_BUBBLE = np.datetime64('2022-02-24')
 HAIRDRESSERS = np.datetime64('2022-03-10')
+FLIGHTS_RESUME = np.datetime64('2022-04-01')
+EASING_PHASE1 = np.datetime64('2022-04-21')
+
 # END_LOCKDOWN = np.datetime64('2021-10-15')
 # FURTHER_EASING = np.datetime64('2021-10-22')
 # EASING_95  = np.datetime64('2021-11-12')
@@ -345,12 +348,29 @@ ax1.fill_betweenx(
 ax1.fill_betweenx(
    [-10, 10],
    [HAIRDRESSERS, HAIRDRESSERS],
-   [END_PLOT, END_PLOT],
+   [FLIGHTS_RESUME, FLIGHTS_RESUME],
    color=whiten("green", 0.20),
    linewidth=0,
    label="Hairdressers Reopen\n理髮店／髮型屋重開",
 )
 
+ax1.fill_betweenx(
+   [-10, 10],
+   [FLIGHTS_RESUME, FLIGHTS_RESUME],
+   [EASING_PHASE1, EASING_PHASE1],
+   color=whiten("green", 0.20),
+   linewidth=0,
+   label="Flights Resume\n取消禁飛令",
+)
+
+ax1.fill_betweenx(
+   [-10, 10],
+   [EASING_PHASE1, EASING_PHASE1],
+   [END_PLOT, END_PLOT],
+   color=whiten("yellow", 0.25),
+   linewidth=0,
+   label="Easing Phase 1\n放寬社交距離1",
+)
 
 
 ax1.fill_between(
@@ -478,10 +498,10 @@ labels += labels2
 
 if VAX:
     # order = [4, 6, 5, 7, 8, 10, 9, 0, 1, 2, 3]
-    order = [5, 4, 6, 7, 8, 10, 9, 0, 1, 2, 3]
+    order = [6, 8, 7, 9, 10, 12, 11, 0, 1, 2, 3, 4, 5]
 else:
     # order = [4, 5, 6, 7, 9, 8, 0, 1, 2, 3]
-    order = [4, 5, 6, 8, 7, 8, 0, 1, 2, 3]
+    order = [6, 7, 8, 9, 11, 10, 0, 1, 2, 3, 4, 5]
     
 fontP = font_manager.FontProperties()
 fontP.set_family('sans-serif')
