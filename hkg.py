@@ -184,7 +184,7 @@ if OLD:
     doses_per_100 = doses_per_100[:START_VAX_PROJECTIONS + OLD_END_IX]
 
 START_PLOT = np.datetime64('2021-12-15')
-END_PLOT = np.datetime64('2022-05-01') if VAX else dates[-1] + 28
+END_PLOT = np.datetime64('2022-06-30') if VAX else dates[-1] + 28
 
 tau = 5  # reproductive time of the virus in days
 R_clip = 50
@@ -299,6 +299,8 @@ VACCINE_BUBBLE = np.datetime64('2022-02-24')
 HAIRDRESSERS = np.datetime64('2022-03-10')
 FLIGHTS_RESUME = np.datetime64('2022-04-01')
 EASING_PHASE1 = np.datetime64('2022-04-21')
+EASING_PHASE2 = np.datetime64('2022-05-05')
+EASING_PHASE3 = np.datetime64('2022-05-19')
 
 # END_LOCKDOWN = np.datetime64('2021-10-15')
 # FURTHER_EASING = np.datetime64('2021-10-22')
@@ -366,12 +368,29 @@ ax1.fill_betweenx(
 ax1.fill_betweenx(
    [-10, 10],
    [EASING_PHASE1, EASING_PHASE1],
-   [END_PLOT, END_PLOT],
-   color=whiten("yellow", 0.25),
+   [EASING_PHASE2, EASING_PHASE2],
+   color=whiten("yellow", 0.60),
    linewidth=0,
    label="Easing Phase 1\n放寬社交距離1",
 )
 
+ax1.fill_betweenx(
+   [-10, 10],
+   [EASING_PHASE2, EASING_PHASE2],
+   [EASING_PHASE3, EASING_PHASE3],
+   color=whiten("yellow", 0.40),
+   linewidth=0,
+   label="Easing Phase 2\n放寬社交距離2",
+)
+
+ax1.fill_betweenx(
+   [-10, 10],
+   [EASING_PHASE3, EASING_PHASE3],
+   [END_PLOT, END_PLOT],
+   color=whiten("yellow", 0.20),
+   linewidth=0,
+   label="Easing Phase 3\n放寬社交距離3",
+)
 
 ax1.fill_between(
     dates[1:] + 1,
@@ -498,10 +517,10 @@ labels += labels2
 
 if VAX:
     # order = [4, 6, 5, 7, 8, 10, 9, 0, 1, 2, 3]
-    order = [6, 8, 7, 9, 10, 12, 11, 0, 1, 2, 3, 4, 5]
+    order = [8, 9, 10, 12, 13, 14, 11, 0, 1, 2, 3, 4, 5, 6, 7]
 else:
     # order = [4, 5, 6, 7, 9, 8, 0, 1, 2, 3]
-    order = [6, 7, 8, 9, 11, 10, 0, 1, 2, 3, 4, 5]
+    order = [8, 9, 11, 12, 13, 10, 0, 1, 2, 3, 4, 5, 6, 7]
     
 fontP = font_manager.FontProperties()
 fontP.set_family('sans-serif')
