@@ -47,8 +47,13 @@ np.random.seed(0)
 
 def hkg_doses_per_100(n):
     """return HKG cumulative doses per 100 population for the last n days"""
+    
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36',
+    }
+
     url = "https://www.fhb.gov.hk/download/opendata/COVID19/vaccination-rates-over-time-by-age.csv"
-    df = pd.read_csv(url)
+    df = pd.read_csv(url, storage_options=headers)
     
     # Convert dates to np.datetime64
     df['Date'] = pd.to_datetime(df['Date'])
