@@ -23,8 +23,12 @@ def th(n):
 
 def hksar_chp_case_data(start_date=np.datetime64('2022-01-01')):
     """Daily new cases from HK Government Data Web"""
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36',
+    }
+
     url = f'http://www.chp.gov.hk/files/misc/latest_situation_of_reported_cases_covid_19_eng.csv'
-    df1 = pd.read_csv(url)
+    df1 = pd.read_csv(url, storage_options=headers)
 
     df1['Number of cases tested positive for SARS-CoV-2 virus by nucleic acid tests'].fillna(df1['Number of confirmed cases'], inplace = True)
     df1['Number of cases tested positive for SARS-CoV-2 virus by rapid antigen tests'].fillna(0, inplace = True)
